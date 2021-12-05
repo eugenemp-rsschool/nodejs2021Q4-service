@@ -30,12 +30,6 @@ class Task {
     ];
     if (!props.every((prop) => prop in task)) return false;
 
-    /* const typeTest = Object.keys(task).every(
-      (key) => props.includeskey && (typeof key === 'string' || 'null')
-    );
-
-    if (!typeTest) return false; */
-
     return true;
   }
 }
