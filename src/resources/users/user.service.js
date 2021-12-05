@@ -2,11 +2,13 @@ const tasksRepo = require('../tasks/task.memory.repository');
 const usersRepo = require('./user.memory.repository');
 const User = require('./user.model');
 
-const deleteTasks = async (tasks) => {
+const updateTasks = async (tasks) => {
   const result = [];
 
   tasks.forEach((task) => {
-    result.push(tasksRepo.remove(task.id));
+    const updatedTask = {...task, userId: null };
+    // console.log(updatedTask);
+    result.push(tasksRepo.put(updatedTask));
   });
 
   return Promise.all(result);
@@ -76,7 +78,7 @@ const deleteUser = async (req, res) => {
   if (await usersRepo.remove(req.params.userId)) {
     const tasks = await tasksRepo.find('userId', req.params.userId);
 
-    if (tasks.length > 0) await deleteTasks(tasks);
+    if (tasks.length > 0) await updateTasks(tasks);
 
     res.status(204).end('User deleted');
   } else res.status(404).end('User width specified id does not exist');
